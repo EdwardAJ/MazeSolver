@@ -152,10 +152,12 @@ def main():
         if (mat[idx_baris][len(mat[idx_baris])-1] == '0'):
             j_goal = len(mat[idx_baris])-1 ; i_goal = idx_baris
             break
+
     #lakukan BFS
     path = BFS(mat, mat_visitedBFS, i_awal , j_awal, i_goal, j_goal)
     #Dapatkan Path
     while (path != None):
+        #Jalan yang sudah dikunjungi diganti dengan 2
         mat[path.i][path.j] = 2
         path = path.parent
 
@@ -165,6 +167,7 @@ def main():
         print()
         print()
 
+    queue_infoMat.clear()
     path2 = Astar(mat, mat_visitedAstar, i_awal , j_awal, i_goal, j_goal)
 
 if __name__ == '__main__':
