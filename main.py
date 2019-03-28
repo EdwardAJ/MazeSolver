@@ -39,28 +39,74 @@ def BFS(mat, mat_visited, i_awal , j_awal, i_goal, j_goal):
     while (queue_infoMat):
         #proses elemen pertama dan hapus elemen pertama dalam queue
         path = queue_infoMat[0];  del queue_infoMat[0]
+
         #print(str(path.i) + "," + str(path.j))
         if (path.i == i_goal and path.j == j_goal):
             mat_visited[path.i][path.j] = True
             return path
         else:
             #cek bawah
-            if (mat[path.i+1][path.j] == '0' and (path.i+1) < len(mat[0]) and mat_visited[path.i+1][path.j] == False):
-                mat_visited[path.i][path.j] = True
-                nextpath = InfoArrElement((path.i+1),(path.j),path,0)
-                queue_infoMat.append(nextpath)
+            if(not isIndexOutOfRange(path.i+1,path.j,mat)):
+                if (mat[path.i+1][path.j] == '0' and mat_visited[path.i+1][path.j] == False):
+                    mat_visited[path.i][path.j] = True
+                    nextpath = InfoArrElement((path.i+1),(path.j),path,0)
+                    queue_infoMat.append(nextpath)
             #cek kanan
-            if (mat[path.i][path.j+1] == '0' and (path.j+1) < len(mat[0]) and mat_visited[path.i][path.j+1] == False):
-                mat_visited[path.i][path.j] = True
-                queue_infoMat.append(InfoArrElement((path.i),(path.j+1),path,0))
+            if(not isIndexOutOfRange(path.i,path.j+1,mat)):
+                if (mat[path.i][path.j+1] == '0' and mat_visited[path.i][path.j+1] == False):
+                    mat_visited[path.i][path.j] = True
+                    queue_infoMat.append(InfoArrElement((path.i),(path.j+1),path,0))
             #cek atas
-            if (mat[path.i-1][path.j] == '0' and (path.i-1) >= 0 and mat_visited[path.i-1][path.j] == False):
-                mat_visited[path.i][path.j] = True
-                queue_infoMat.append(InfoArrElement((path.i-1),(path.j),path,0))
+            if(not isIndexOutOfRange(path.i-1,path.j,mat)):
+                if (mat[path.i-1][path.j] == '0' and mat_visited[path.i-1][path.j] == False):
+                    mat_visited[path.i][path.j] = True
+                    queue_infoMat.append(InfoArrElement((path.i-1),(path.j),path,0))
             #cek kiri
-            if (mat[path.i][path.j-1] == '0' and (path.j-1) > 0 and mat_visited[path.i][path.j-1] == False):
-                mat_visited[path.i][path.j] = True
-                queue_infoMat.append(InfoArrElement((path.i),(path.j-1),path,0))
+            if(not isIndexOutOfRange(path.i,path.j-1,mat)):
+                if (mat[path.i][path.j-1] == '0' and mat_visited[path.i][path.j-1] == False):
+                    mat_visited[path.i][path.j] = True
+                    queue_infoMat.append(InfoArrElement((path.i),(path.j-1),path,0))
+
+def Astar(mat, mat_visited, i_awal , j_awal, i_goal, j_goal):
+    path = InfoArrElement(i_awal, j_awal, None, 0)
+    queue_infoMat.append(path)
+    #isNotEmpty
+    while (queue_infoMat):
+        #proses elemen pertama dan hapus elemen pertama dalam queue
+        path = queue_infoMat[0];  del queue_infoMat[0]
+
+        #print(str(path.i) + "," + str(path.j))
+        if (path.i == i_goal and path.j == j_goal):
+            mat_visited[path.i][path.j] = True
+            return path
+        else:
+            #cek bawah
+            if(not isIndexOutOfRange(path.i+1,path.j,mat)):
+                if (mat[path.i+1][path.j] == '0' and mat_visited[path.i+1][path.j] == False):
+                    mat_visited[path.i][path.j] = True
+                    nextpath = InfoArrElement((path.i+1),(path.j),path,0)
+                    queue_infoMat.append(nextpath)
+            #cek kanan
+            if(not isIndexOutOfRange(path.i,path.j+1,mat)):
+                if (mat[path.i][path.j+1] == '0' and mat_visited[path.i][path.j+1] == False):
+                    mat_visited[path.i][path.j] = True
+                    queue_infoMat.append(InfoArrElement((path.i),(path.j+1),path,0))
+            #cek atas
+            if(not isIndexOutOfRange(path.i-1,path.j,mat)):
+                if (mat[path.i-1][path.j] == '0' and mat_visited[path.i-1][path.j] == False):
+                    mat_visited[path.i][path.j] = True
+                    queue_infoMat.append(InfoArrElement((path.i-1),(path.j),path,0))
+            #cek kiri
+            if(not isIndexOutOfRange(path.i,path.j-1,mat)):
+                if (mat[path.i][path.j-1] == '0' and mat_visited[path.i][path.j-1] == False):
+                    mat_visited[path.i][path.j] = True
+                    queue_infoMat.append(InfoArrElement((path.i),(path.j-1),path,0))
+
+def isIndexOutOfRange(i,j,mat):
+    if (i >= 0 and i < len(mat) and j >= 0 and j < len(mat[0])):
+        return False
+    else:
+        return True
 
 #Program Utama
 def main():
@@ -96,7 +142,8 @@ def main():
 
     for i in range (len(mat)):
         for j in range (len(mat[0])):
-            print(mat[i][j], end = '')
+            print(mat[i][j], end = ' ')
+        print()
         print()
 
 if __name__ == '__main__':
