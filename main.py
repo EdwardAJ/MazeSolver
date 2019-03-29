@@ -1,5 +1,4 @@
 from colorama import init, Fore, Back, Style
-#import matplotlib.pyplot as plt
 #Tugas Kecil Strategi Algoritma 2019
 #kelas InfoArrElement, menyimpan posisi elemen,  "bapak" dari elemen, dan cost.
 class InfoArrElement:
@@ -150,15 +149,29 @@ def main():
     #inisialisasi mat_visited, yaitu list of list berisi boolean visitedTrue atau visitedFalse.
     mat_visitedBFS = [[False]*len(mat[0]) for idx_baris in range(len(mat))]
     mat_visitedAstar = [[False]*len(mat[0]) for idx_baris in range(len(mat))]
+
     #cari posisi jalan masuk
     for idx_baris in range(len(mat)):
         if (mat[idx_baris][0] == '0'):
-            i_awal = idx_baris ; j_awal = 0
+            i_awal = idx_baris
+            j_awal = 0
             break
+    for idx_kolom in range(len(mat[0])):
+        if (mat[0][idx_kolom] == '0'):
+            i_awal = 0
+            j_awal = idx_kolom
+            break
+
     #cari posisi jalan keluar
     for idx_baris in range(len(mat)):
         if (mat[idx_baris][len(mat[idx_baris])-1] == '0'):
-            j_goal = len(mat[idx_baris])-1 ; i_goal = idx_baris
+            j_goal = len(mat[idx_baris])-1
+            i_goal = idx_baris
+            break
+    for idx_kolom in range(len(mat[0])):
+        if (mat[len(mat)-1][idx_kolom] == '0'):
+            i_goal = len(mat)-1
+            j_goal = idx_kolom
             break
 
     #lakukan BFS
@@ -173,11 +186,13 @@ def main():
     #Dapatkan Path A-Star
     getPath(mat2,path2)
 
-    print("BFS :")
-    visualization(mat)
-
-    print("A-STAR :")
-    visualization(mat2)
+    if (mat[i_awal][j_awal] == '2'):
+        print("BFS :")
+        visualization(mat, i_awal, i_goal, j_awal, j_goal)
+        print("A-STAR :")
+        visualization(mat2, i_awal, i_goal, j_awal, j_goal)
+    else:
+        print("TIDAK ADA SOLUSI")
 
 def getPath(mat, path):
     while (path != None):
@@ -185,12 +200,17 @@ def getPath(mat, path):
         mat[path.i][path.j] = '2'
         path = path.parent
 
-def visualization(mat):
+def visualization(mat, i_awal, i_goal, j_awal, j_goal):
     init(convert=True)
     for i in range(0, len(mat)):
         for j in range(0, len(mat[0])):
             if (mat[i][j] == '2'):
-                print(Back.CYAN + " ", end = ' ')
+                if (i == i_awal and j == j_awal):
+                    print(Back.CYAN + "S", end = ' ')
+                elif (i == i_goal and j == j_goal):
+                    print(Back.CYAN + "F", end = ' ')
+                else:
+                    print(Back.CYAN + " ", end = ' ')
                 print(Style.RESET_ALL, end = '')
             elif (mat[i][j] == '0'):
                 print(Back.BLACK + " ", end = ' ')
