@@ -206,9 +206,9 @@ def visualization(mat, i_awal, i_goal, j_awal, j_goal):
         for j in range(0, len(mat[0])):
             if (mat[i][j] == '2'):
                 if (i == i_awal and j == j_awal):
-                    print(Back.CYAN + "S", end = ' ')
+                    print(Back.RED + "S", end = ' ')
                 elif (i == i_goal and j == j_goal):
-                    print(Back.CYAN + "F", end = ' ')
+                    print(Back.RED + "F", end = ' ')
                 else:
                     print(Back.CYAN + " ", end = ' ')
                 print(Style.RESET_ALL, end = '')
