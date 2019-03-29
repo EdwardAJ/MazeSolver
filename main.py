@@ -1,3 +1,4 @@
+from colorama import init, Fore, Back, Style
 #import matplotlib.pyplot as plt
 #Tugas Kecil Strategi Algoritma 2019
 #kelas InfoArrElement, menyimpan posisi elemen,  "bapak" dari elemen, dan cost.
@@ -132,13 +133,20 @@ def main():
     print("Ketik 1 untuk file eksternal, Ketik 0 dari keyboard: ")
     input_param = int(input())
     #inisialisasi mat, yaitu list of list.
-    mat = []
+    mat = [] #buat bfs
+    mat2 = [] #buat a-star
     if (input_param == 0):
         baris = int (input("Masukkan jumlah baris dari Map: "))
-        getMazeFromKeyboard(mat,baris)
+        getMazeFromKeyboard(mat,baris) #buat bfs
+        getMazeFromKeyboard(mat2,baris) #buat a-star
     elif (input_param == 1):
         namaFile = input(str("Nama File : "))
-        getMazeFromFile(mat, namaFile)
+        getMazeFromFile(mat, namaFile) #buat bfs
+        getMazeFromFile(mat2, namaFile) #buat a-star
+
+    print("MAZE AWAL :")
+    visualizationAwal(mat) #gambar mazenya yg awal belom dikerjain
+
     #inisialisasi mat_visited, yaitu list of list berisi boolean visitedTrue atau visitedFalse.
     mat_visitedBFS = [[False]*len(mat[0]) for idx_baris in range(len(mat))]
     mat_visitedAstar = [[False]*len(mat[0]) for idx_baris in range(len(mat))]
@@ -155,20 +163,64 @@ def main():
 
     #lakukan BFS
     path = BFS(mat, mat_visitedBFS, i_awal , j_awal, i_goal, j_goal)
-    #Dapatkan Path
-    while (path != None):
-        #Jalan yang sudah dikunjungi diganti dengan 2
-        mat[path.i][path.j] = 2
-        path = path.parent
-
-    for i in range (len(mat)):
-        for j in range (len(mat[0])):
-            print(mat[i][j], end = ' ')
-        print()
-        print()
+    #Dapatkan Path BFS
+    getPath(mat,path)
 
     queue_infoMat.clear()
-    path2 = Astar(mat, mat_visitedAstar, i_awal , j_awal, i_goal, j_goal)
+
+    #lakukan A-Star
+    path2 = Astar(mat2, mat_visitedAstar, i_awal , j_awal, i_goal, j_goal)
+    #Dapatkan Path A-Star
+    getPath(mat2,path2)
+
+    print("BFS :")
+    visualization(mat)
+
+    print("A-STAR :")
+    visualization(mat2)
+
+def getPath(mat, path):
+    while (path != None):
+        #Jalan yang sudah dikunjungi diganti dengan 2
+        mat[path.i][path.j] = '2'
+        path = path.parent
+
+def visualization(mat):
+    init(convert=True)
+    for i in range(0, len(mat)):
+        for j in range(0, len(mat[0])):
+            if (mat[i][j] == '2'):
+                print(Back.CYAN + " ", end = ' ')
+                print(Style.RESET_ALL, end = '')
+            elif (mat[i][j] == '0'):
+                print(Back.BLACK + " ", end = ' ')
+                print(Style.RESET_ALL, end = '')
+            elif (mat[i][j] == '1'):
+                print(Back.WHITE + " ", end = ' ')
+                print(Style.RESET_ALL, end = '')
+        print()
+    print()
+
+def visualizationAwal(mat):
+    init(convert=True)
+    for i in range(0, len(mat)):
+        for j in range(0, len(mat[0])):
+            if (mat[i][j] == '0'):
+                print(Back.BLACK + " ", end = ' ')
+                print(Style.RESET_ALL, end = '')
+            elif (mat[i][j] == '1'):
+                print(Back.WHITE + " ", end = ' ')
+                print(Style.RESET_ALL, end = '')
+        print()
+    print()
 
 if __name__ == '__main__':
     main()
+
+# from colorama import init, Fore, Back, Style
+# init(convert=True)
+# print(Fore.RED + 'some red text')
+# print(Back.GREEN + 'and with a green background')
+# print(Style.DIM + 'and in dim text')
+# print(Style.RESET_ALL)
+# print('back to normal now')
