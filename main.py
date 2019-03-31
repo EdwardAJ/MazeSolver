@@ -12,14 +12,6 @@ class InfoArrElement:
         #cost
         self.cost = cost
 
-#fungsi mendapat maze dari keyboard
-#parameter : list of list mat, int baris, int kolom
-def getMazeFromKeyboard(mat,baris):
-    #Isi list of list
-    for idx_baris in range (baris):
-        elemen = input(str()) #splitting string to char
-        mat[idx_baris] = list (str(elemen))
-
 #fungsi mendapat maze dari file
 #parameter : list of list mat
 def getMazeFromFile(mat, namaFile):
@@ -139,19 +131,12 @@ def isIndexOutOfRange(i,j,mat):
 def main():
     jarak = 0 ; jarak2 = 0
     #pilihan untuk memasukkan maze dari file external atau dari keyboard.
-    print("Ketik 1 untuk file eksternal, Ketik 0 dari keyboard: ")
-    input_param = int(input())
     #inisialisasi mat, yaitu list of list.
     mat = [] #buat bfs
     mat2 = [] #buat a-star
-    if (input_param == 0):
-        baris = int (input("Masukkan jumlah baris dari Map: "))
-        getMazeFromKeyboard(mat,baris) #buat bfs
-        getMazeFromKeyboard(mat2,baris) #buat a-star
-    elif (input_param == 1):
-        namaFile = input(str("Nama File : "))
-        getMazeFromFile(mat, namaFile) #buat bfs
-        getMazeFromFile(mat2, namaFile) #buat a-star
+    namaFile = input(str("Nama File : "))
+    getMazeFromFile(mat, namaFile) #buat bfs
+    getMazeFromFile(mat2, namaFile) #buat a-star
 
     print("MAZE AWAL :")
     visualizationAwal(mat) #gambar mazenya yg awal belom dikerjain
@@ -257,11 +242,3 @@ def visualizationAwal(mat):
 
 if __name__ == '__main__':
     main()
-
-# from colorama import init, Fore, Back, Style
-# init(convert=True)
-# print(Fore.RED + 'some red text')
-# print(Back.GREEN + 'and with a green background')
-# print(Style.DIM + 'and in dim text')
-# print(Style.RESET_ALL)
-# print('back to normal now')
